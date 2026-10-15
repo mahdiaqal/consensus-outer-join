@@ -68,3 +68,7 @@ genlayer deploy --contract contracts/ConsensusOuterJoin.py
 Never export keys. Confirm FINALIZED **and execution SUCCESS**, compare source, then read materialized rows. Optional scripts use an existing unlocked OS-vault account via `JOIN_TEST_ACCOUNT`; `JOIN_CLI_PATH` selects an installed CLI entrypoint. The CLI wrapper suppresses raw validator configuration and performs one-shot broadcasts. Check each receipt before the next transaction and never blindly repeat an uncertain broadcast.
 
 See [architecture](docs/architecture.md), [threat model](SECURITY.md), [proof matrix](docs/proof-matrix.md), and [live proof ledger](LIVE_PROOFS.md). Experimental, unaudited; semantic consensus may share model errors. No production-safety or reviewer-acceptance guarantee.
+
+## Live deployment
+
+[StudioNet contract](https://explorer-studio.genlayer.com/address/0x814C939149bB6CD0F369241a3860D651027A1471). Deployed source matches the tested file. Live trials produced the expected two-pair clean join, preserved an ambiguous duplicate-alias component, and blocked a bad byte commitment. Replay failed as expected. The proof ledger separates four successful executions from the expected error and documents fixture limitations.

@@ -2,12 +2,12 @@
 
 | Case | Required output | Local evidence | Live evidence |
 |---|---|---|---|
-| Synonyms with unique partners | Two joined pairs; unmatched rows retained | direct mock | Pending |
-| Duplicate aliases | Ambiguous component; unaffected pair retained | direct mock | Pending |
+| Synonyms with unique partners | Two joined pairs; unmatched rows retained | direct mock | SUCCESS: `66858f9b…` |
+| Duplicate aliases | Ambiguous component; unaffected pair retained | direct mock | SUCCESS: `c5f299ca…` |
 | UNKNOWN bridging two pairs | Whole connected component unresolved | direct/helper tests | Not claimed |
-| Wrong byte commitment | BLOCKED; empty joined output | direct mock | Pending |
+| Wrong byte commitment | BLOCKED; empty joined output | direct mock | SUCCESS, negative path: `66193829…` |
 | HTTP/schema/encoding/size failure | BLOCKED | direct mock | Not claimed |
-| Nonce replay | Error; immutable result unchanged | direct mock | Pending |
+| Nonce replay | Error; immutable result unchanged | direct mock | Expected ERROR: `ece541da…` |
 | Changed semantic label/evidence/binding | Actual validator callback rejects | callback unit test | Not claimed |
 | Identical contents reported different | Rejected before materialization | helper test | Not claimed |
 | Every 3×3 label matrix | Each row partitioned exactly once; no ambiguous joined pair | 19,683 exhaustive matrices | Not a live test |

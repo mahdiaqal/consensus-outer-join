@@ -34,6 +34,11 @@ if(process.argv[1]?.endsWith('check.mjs'))try{
   const actual=norm(Buffer.from(await rpc('gen_getContractCode',[value]),'base64').toString('utf8'));
   const local=norm(fs.readFileSync('contracts/ConsensusOuterJoin.py','utf8'));
   console.log(JSON.stringify({address:value,source_matches:actual===local,source_sha256:sha(actual)}));if(actual!==local)process.exitCode=1;
+ }else if(mode==='one'){
+  const record=await createClient({chain:studionet}).readContract({address:value,functionName:'get_materialization',args:[extra]});
+  const {root,...body}=record;if(digest(body)!==root)throw Error('Materialization root mismatch');
+  console.log(JSON.stringify({id:extra,root,status:record.status,matrix:record.report.matrix,output:record.output,
+   sources:record.report.sources.map(({body,...rest})=>rest)}));
  }else if(mode==='state'){
   const client=createClient({chain:studionet}),summaries=[];
   const read=(functionName,args)=>client.readContract({address:value,functionName,args});
@@ -50,7 +55,7 @@ if(process.argv[1]?.endsWith('check.mjs'))try{
    }
    if(record.status==='MATERIALIZED'){
     if(sources.some(s=>s.status!=='OK'))throw Error('Bad evidence materialized');
-    const tables=sources.map(s=>JSON.parse(s.body).rows.sort((a,b)=>a.id.localeCompare(b.id)));
+    const tables=sources.map(s=>JSON.parse(s.body).rows.sort((a,b)=>a.id<b.id?-1:a.id>b.id?1:0));
     if(canonical(outerJoin(...tables,record.report.matrix))!==canonical(record.output))throw Error('Partition mismatch');
     if(canonical(await read('get_joined',[key,root]))!==canonical(record.output.joined))throw Error('Consumer output mismatch');
    }else if(record.status==='BLOCKED'){
